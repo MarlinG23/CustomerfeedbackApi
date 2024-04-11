@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CustomerfeedbackApi.Models;
+using CustomerfeedbackApi.Data;
 
 namespace CustomerfeedbackApi.Controllers
 {
@@ -13,7 +14,6 @@ namespace CustomerfeedbackApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        //Dependency Injection 
         private readonly ApiDbContext _context;
 
         public UsersController(ApiDbContext context)
@@ -30,7 +30,7 @@ namespace CustomerfeedbackApi.Controllers
 
         // GET: api/Users/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Users>> GetUsers(string id)
+        public async Task<ActionResult<Users>> GetUsers(int id)
         {
             var users = await _context.users.FindAsync(id);
 
@@ -43,8 +43,9 @@ namespace CustomerfeedbackApi.Controllers
         }
 
         // PUT: api/Users/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUsers(string id, Users users)
+        public async Task<IActionResult> PutUsers(int id, Users users)
         {
             if (id != users.UserId)
             {
@@ -73,32 +74,19 @@ namespace CustomerfeedbackApi.Controllers
         }
 
         // POST: api/Users
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Users>> PostUsers(Users users)
         {
             _context.users.Add(users);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (UsersExists(users.UserId))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetUsers", new { id = users.UserId }, users);
         }
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUsers(string id)
+        public async Task<IActionResult> DeleteUsers(int id)
         {
             var users = await _context.users.FindAsync(id);
             if (users == null)
@@ -112,7 +100,7 @@ namespace CustomerfeedbackApi.Controllers
             return NoContent();
         }
 
-        private bool UsersExists(string id)
+        private bool UsersExists(int id)
         {
             return _context.users.Any(e => e.UserId == id);
         }

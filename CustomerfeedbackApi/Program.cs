@@ -1,4 +1,4 @@
-using CustomerfeedbackApi.Models;
+using CustomerfeedbackApi.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
