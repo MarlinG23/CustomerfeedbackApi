@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CustomerfeedbackApi.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20240410223053_initial migration")]
+    [Migration("20240416152539_initialmigration")]
     partial class initialmigration
     {
         /// <inheritdoc />
@@ -32,15 +32,15 @@ namespace CustomerfeedbackApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
 
+                    b.Property<string>("Customerfeedback")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Role")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

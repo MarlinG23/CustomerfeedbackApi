@@ -14,6 +14,6 @@ namespace CustomerfeedbackApi.Models
         public string Email { get; set; } = "";
 
         [Required]
-        public string Role { get; set; } = "";
+        public string Customerfeedback { get; set; } = "";
     }
 }
