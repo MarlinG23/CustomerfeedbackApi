@@ -9,6 +9,7 @@ namespace CustomerfeedbackApi.Data
         {
 
         }
-        public DbSet<Users> users { get; set; }
+        public DbSet<Users> users { get; set; } //standard user infor
+        //public DbSet<UserInfo> UserInfo { get; set; }//Security for passwords etc
     }
 }
