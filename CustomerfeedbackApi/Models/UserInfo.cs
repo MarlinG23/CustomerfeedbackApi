@@ -8,10 +8,13 @@ namespace CustomerfeedbackApi.Models
         public int Id { get; set; }
 
         [Required]
-        public string Username { get; set; }
+        public string Email { get; set; }
 
         [Required]
         public string PasswordHash { get; set; }
+        public bool IsLockedOut { get; set; } // New property to track lockout status
+
+        public int FailedLoginAttempts { get; set; } // New property to track failed login attempts
 
     }
 }

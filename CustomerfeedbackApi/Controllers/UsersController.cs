@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using CustomerfeedbackApi.Models;
 using CustomerfeedbackApi.Data;
+using CustomerfeedbackApi.Services;
 
 namespace CustomerfeedbackApi.Controllers
 {
@@ -15,10 +16,12 @@ namespace CustomerfeedbackApi.Controllers
     public class UsersController : ControllerBase
     {
         private readonly ApiDbContext _context;
+        private readonly EmailService _emailService; // Added EmailService
 
-        public UsersController(ApiDbContext context)
+        public UsersController(ApiDbContext context, EmailService emailService)
         {
             _context = context;
+            _emailService = emailService; // Initialized EmailService
         }
 
         // GET: api/Users
@@ -43,7 +46,6 @@ namespace CustomerfeedbackApi.Controllers
         }
 
         // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUsers(int id, Users users)
         {
@@ -74,14 +76,26 @@ namespace CustomerfeedbackApi.Controllers
         }
 
         // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Users>> PostUsers(Users users)
         {
             _context.users.Add(users);
             await _context.SaveChangesAsync();
 
+            // Send email with the feedback comment
+            SendFeedbackEmail(users.Email, users);
+
             return CreatedAtAction("GetUsers", new { id = users.UserId }, users);
+        }
+
+        private void SendFeedbackEmail(string fromAddress, Users users)
+        {
+           
+            var toAddress = "marling.theaiguy@gmail.com";//Points to the directed email address
+            var subject = "New Feedback Submitted";
+            var body = $"Name: {users.Name}\nEmail: {users.Email}\nFeedback: {users.Customerfeedback}";
+
+            _emailService.SendFeedbackEmail(fromAddress, toAddress, subject, body);
         }
 
         // DELETE: api/Users/5

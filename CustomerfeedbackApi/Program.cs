@@ -1,4 +1,5 @@
 using CustomerfeedbackApi.Data;
+using CustomerfeedbackApi.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,6 +12,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApiDbContext>(option =>
 option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+// Register EmailService
+builder.Services.AddScoped<EmailService>(provider =>
+{
+    return new EmailService("smtp.gmail.com", 587, "smtp.ai8888@gmail.com", "uwkx uoyi zjtt yqgd");
+});
+
 
 var app = builder.Build();
 
