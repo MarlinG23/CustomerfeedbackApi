@@ -25,3 +25,5 @@ Below are a few challenges faced:
 - OneSignal email auth created - few issues, current app gives issues, but on seperate app emails are being sent[figure out why]
 - Personal machine is an i5, so machine boms out connecting to firebase features/onesignal as well
 - outstanding items = Login frontEnd
+- admin to login functionality not created, instead a universal login has been developed
+
